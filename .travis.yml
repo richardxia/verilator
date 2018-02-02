@@ -1,0 +1,18 @@
+services:
+  - docker
+
+before_install:
+  - docker build -t verilator .
+
+script:
+  - docker run --rm -e PACKAGE_VERSION=${TRAVIS_TAG:-0.0UNTAGGED} -v $PWD:/usr/src/app verilator ./build-deb.sh
+
+deploy:
+  provider: releases
+  api_key:
+    secure: QdCcDFRpojhkvmIvzyKSIeMR0daFbBfB3/5ytK1NjS8pEIB85YuSw44xx2e/1YlDdCUGYSW5MfRzWahB+SrLGIolu4sK8Vu+I+k78VTYcIXy8ih0d3/3aw1vo+b/t4Ir0Jtr7jtoPJjNtJABJi+Z/tdJUkCy3QHwMuX4dZgbVtjCJyh2dVYLM+BoYHtXKLyXoDa1BN5ayieFmAtXlNyIvovWFgFnd0U94vGLGopq++12i27D6RzW30XVKVUMLcFpwWmRyFozOh0ofIQ9mrRKwgk/SFCglbepWika9R5HpXl5HE2gUNIdN1Gu4IomcwU3gchkXeQGqJ81ZFPElg+xojjLHlkMFRCejb2bWxazOHe9VPaNunLF7mU+TDjPcuz5Rv5Xz9LZjIDXmnxxyMEpw/hORQp5V2ws8HAsMMMvEdWY2yI6V0TfKG8LBNcJRerx3tOhj59qHDH5jTXHzwpgjn5kQhjviO6f4nN61mUsQSOV0EUp7+QvFoH+iQHs3KYt7a9tsFV0AEJslxlLtfBP8nBjCsASs40QiV9A99KGrequtAENTeDsvaNT8rAYSPTdh7bV3sFFHwqN5tDAPFFfzGGgDuXjQk99hVIjFnvl+dM7T4IZAYyL03bvBEKGcrI1mbaPsDyy3eYkAMMCHWUMf+rzJSB3ZunA4SDHO0tW/p8=
+  file: verilator_${TRAVIS_TAG}_amd64.deb
+  skip_cleanup: true
+  on:
+    repo: richardxia/verilator
+    tags: true
